@@ -3,7 +3,7 @@ import sqlite3
 
 #Creating the all users db and users table
 db = Database(sqlite3.connect("./var/all_users.db"))
-users = db["all_users"]
+users = db["users"]
 users.insert({
     "username": "anonymous",
     "bio": "I am everywhere",
@@ -30,4 +30,11 @@ users.insert({
     "bio": "I didn't check if 'Jane' was taken",
     "password": "Ishouldvechecked",
     "email": "Jane@123.com",
+})
+
+users.insert({
+    "username": "Ash",
+    "bio": "bio",
+    "password": "something",
+    "email": "Ash@sha.com",
 })

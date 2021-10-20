@@ -9,10 +9,10 @@ db_query = sqlite3.connect("./var/all_users.db")
 cursor = db_query.cursor()
 api = hug.get(on_invalid=hug.redirect.not_found)
 
-# Getting all the users
+# Getting all the usernames
 @hug.get('/users')
 def get_all_users():
-    return {"users" : cursor.execute("SELECT username FROM users").fetchall()}
+    return db.query("SELECT username FROM users")
 
 # Getting a single user users, shows password for demonstration purposes
 @hug.get('/users/{username}')
@@ -22,8 +22,8 @@ def get_single_users(response, username:str):
         cursor.execute(f"SELECT bio FROM users WHERE username='{username}'")
     except sqlite_utils.db.NotFoundError:
         response.status = hug.falcon.HTTP_404
-
-    return {"user" : cursor.execute(f"SELECT * FROM users WHERE username='{username}'").fetchall()}
+    result = (f"SELECT * FROM users WHERE username='{username}'")
+    return db.query(result)
 
 # Getting all the users from specific user
 @hug.get('/users/{username}/followers')
