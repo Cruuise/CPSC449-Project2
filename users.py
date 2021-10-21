@@ -3,6 +3,8 @@ import sqlite3
 import sqlite_utils
 from sqlite_utils import Database
 
+# Makes the output JSON more legible
+hug.defaults.output_format = hug.output_format.pretty_json
 # db will be used for POST, db_query will be used for GET
 db = Database(sqlite3.connect("./var/all_users.db"))
 db_query = sqlite3.connect("./var/all_users.db")
@@ -12,7 +14,7 @@ api = hug.get(on_invalid=hug.redirect.not_found)
 # Getting all the usernames
 @hug.get('/users')
 def get_all_users():
-    return db.query("SELECT username FROM users")
+    return db.query("SELECT * FROM users")
 
 # Getting a single user users, shows password for demonstration purposes
 @hug.get('/users/{username}')
@@ -22,14 +24,20 @@ def get_single_users(response, username:str):
         cursor.execute(f"SELECT bio FROM users WHERE username='{username}'")
     except sqlite_utils.db.NotFoundError:
         response.status = hug.falcon.HTTP_404
-    result = (f"SELECT * FROM users WHERE username='{username}'")
-    return db.query(result)
+    query_string = (f"SELECT * FROM users WHERE username='{username}'")
+    return db.query(query_string)
 
-# Getting all the users from specific user
+# Getting all the followers from specific user
 @hug.get('/users/{username}/followers')
-def get_user_home(username: str):
-    action = f"SELECT user FROM followers WHERE follows='{username}'"
-    return {"followers" : cursor.execute(action)}
+def get_user_followers(username: str):
+    query_string = f"SELECT follows FROM followers WHERE follows='{username}'"
+    return db.query(query_string)
+
+# Getting all the people the user follows
+@hug.get('/users/{username}/follows')
+def get_user_followers(username: str):
+    query_string = f"SELECT user FROM followers WHERE user='{username}'"
+    return db.query(query_string)
 
 # POST to create a follower, usename ----follow----> follows
 @hug.post("/users/{username}/follow", status=hug.falcon.HTTP_201)

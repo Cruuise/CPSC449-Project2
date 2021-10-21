@@ -1,7 +1,8 @@
-from sqlite3.dbapi2 import Date
 from sqlite_utils import Database
+from datetime import datetime
 import sqlite3
 
+2011, 11, 4, 0, 5, 23, 283000
 #Creating the all users db and users table
 db = Database(sqlite3.connect("./var/all_posts.db"))
 posts = db["posts"]
@@ -9,7 +10,7 @@ posts.insert({
     "id": 0,
     "author": "anonymous",
     "text": "Dhsod's password is superoriginal",
-    "timestamp": Date(2021, 10, 1),
+    "timestamp": datetime(2021, 10, 1[12,]),
     "repost": "no",
 }, pk = "id")
 
@@ -17,7 +18,7 @@ posts.insert({
     "id": 1,
     "author": "Dhsod",
     "text": "I feel like someone has my password",
-    "timestamp": Date(2021, 10, 2),
+    "timestamp": datetime(2021, 10, 2),
     "repost": "no",
 })
 

@@ -38,3 +38,10 @@ users.insert({
     "password": "something",
     "email": "Ash@sha.com",
 })
+
+users.insert({
+    "username": "test",
+    "bio": "testbio",
+    "password": "test",
+    "email": "test@test.com",
+})
