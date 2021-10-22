@@ -97,3 +97,5 @@ def create_user(
 
     response.set_header("Location", f"/users/{user['username']}")
     return user
+
+# hug.API(__name__).http.serve(port=7000)

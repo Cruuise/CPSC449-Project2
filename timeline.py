@@ -115,7 +115,7 @@ def create_post(
 # print(name_query)
 # name_query = str(name_query)[1:-1]
 # print(name_query)
-hug.API(__name__).http.serve(port=8001)
+# hug.API(__name__).http.serve(port=9000)
 
 # id = -1
 # for row in db.query(f"SELECT * FROM posts WHERE text='I''m kev' ORDER BY timestamp ASC"):
