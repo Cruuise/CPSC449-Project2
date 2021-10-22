@@ -13,29 +13,49 @@ Note: The project does not need any other libraries besides the once stated in t
 
 # API Services
 
-**Users**
+Below are the routes followed by a description of what each does. The bullet point below each route is an example that can be ran using httpie
+**Users**  
 *GET*  
-/users            ------> Gets all users  
-/users/{username}  -------> Gets a specific user  
-/users/{username}/followers -----> Gets all the followers for the given username  
-/user/{username}/follows -------> Gets all the people that the given user follows  
+
+> `/users`  --------------------------------------> Gets all users  
+- http GET localhost:8000/users
+
+
+> `/users/{username}`  ---------------------------> Gets a specific user  
+- http GET localhost:8000/users/Dhsod
+
+
+> `/users/{username}/followers` ------------------> Gets all the followers for the given username  
+- http GET localhost:8000/users/Jane123/followers
+
+
+> `/user/{username}/follows` ---------------------> Gets all the people that the given user follows  
+- http GET localhost:8000/users/kev/follows
+
   
 
 *POST*  
-/users/{username}/follow -----> Makes the user follow a given username  
-/users -------> Creates a new user  
+> `/users/{username}/follow` ---------------------> Makes the user follow a given username  
+> `/users` ---------------------------------------> Creates a new user  
 
-**Timeline**
+**Timeline**  
 *GET*  
-/public -----> Returns public timeline of all posts  
-/posts/{id} -----> Returns a specific post given an ID  
-/{username}/user_timeline ----> Returns a timeline of all a given users posts  
-/{username}/home_timeline ---> Returns a timeline of all the posts from the people the user follows. Requires authentication  
-http GET localhost:8001/public  
-http GET localhost:8001/posts/3  
-http GET localhost:8001/Ash/user_timeline  
-http GET Ash:something@localhost:8001/Ash/home_timeline  
+> `/public` --------------------------------------> Returns public timeline of all posts  
+- http GET localhost:8001/public  
+
+
+> `/posts/{id}` ---------------------------------> Returns a specific post given an ID  
+- http GET localhost:8001/posts/3  
+
+
+> `/{username}/user_timeline` -------------------> Returns a timeline of all a given users posts  
+- http GET localhost:8001/Ash/user_timeline  
+
+
+> `/{username}/home_timeline` -------------------> Returns a timeline of all the posts from the people the user follows. Requires authentication  
+- http GET Ash:something@localhost:8001/Ash/home_timeline  
+
 
 *POST*  
-/post -----> Makes a post. Requires authentication  
-http POST Ash:something@localhost:8001/post username=Ash text="Im kev"   
+> `/post` ---------------------------------------> Makes a post. Requires authentication  
+- http POST Ash:something@localhost:8001/post username=Ash text="Im kev"   
