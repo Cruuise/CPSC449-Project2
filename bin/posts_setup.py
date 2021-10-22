@@ -43,5 +43,5 @@ posts.insert({
     "author": "Ash",
     "text": "Im kev",
     "timestamp": datetime(2021, 10, 5),
-    "repost": "yes",
+    "repost": "/posts/3",
 })

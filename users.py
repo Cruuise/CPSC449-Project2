@@ -26,14 +26,20 @@ def get_single_users(response, username:str):
 
 # Getting all the followers from specific user
 @hug.get('/users/{username}/followers')
-def get_user_followers(username: str):
-    query_string = f"SELECT follows FROM followers WHERE follows='{username}'"
+def get_user_followers(username: str, response):
+    query_string = f"SELECT user FROM followers WHERE follows='{username}'"
+    try:
+        db.query(query_string)
+    except Exception as e:
+        response.status = hug.falcon.HTTP_404
+        return {"error": str(e)}
     return db.query(query_string)
+
 
 # Getting all the people the user follows
 @hug.get('/users/{username}/follows')
 def get_user_followers(username: str):
-    query_string = f"SELECT user FROM followers WHERE user='{username}'"
+    query_string = f"SELECT follows FROM followers WHERE user='{username}'"
     return db.query(query_string)
 
 # POST to create a follower, usename ----follow----> follows
@@ -91,6 +97,3 @@ def create_user(
 
     response.set_header("Location", f"/users/{user['username']}")
     return user
-
-for row in db.query(f"SELECT * from users"):
-    print(row["username"])

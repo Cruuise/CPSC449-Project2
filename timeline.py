@@ -33,11 +33,9 @@ def authenticate_login(username, password):
 # checks for  reposts, TODO
 def check_repost(text):
     repost = "no"
-    # repost_id = -1 if original, otherwise get the original post's id
-    repost_id = -1
     for row in db.query(f"SELECT * FROM posts WHERE text='{text}' ORDER BY timestamp ASC"):
         id = row["id"]
-        respost = f"localhost:8001/posts/{str(id)}" 
+        repost = f"/posts/{str(id)}" 
         # All we need is the first value of the loop
         break
     return repost
@@ -64,7 +62,7 @@ def get_post(
 ):
     return db.query(f"SELECT * FROM posts WHERE id='{id}'")
 
-# Contains all of the users posts, requires authentication
+# Contains all of the users posts
 @hug.get('/{username}/user_timeline')
 def user_timeline(username: hug.types.text):
     return db.query(f"SELECT * FROM posts WHERE author='{username}'")
@@ -83,7 +81,7 @@ def home_timeline(username: hug.types.text):
 @hug.post('/post', requires=hug.authentication.basic(authenticate_login))
 def create_post(
     response,
-    username: hug.directives.user,
+    username: hug.types.text,
     text: hug.types.text
 ):
     repost = check_repost(text)
@@ -93,8 +91,8 @@ def create_post(
     post = {
         "author": username,
         "text": text,
-        "timestamp": datetime.now,
-        "repost": repost 
+        "timestamp": datetime.now(),
+        "repost": repost
     }
     try:
         posts.insert(post)
