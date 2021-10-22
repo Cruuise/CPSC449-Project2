@@ -14,11 +14,13 @@ Note: The project does not need any other libraries besides the once stated in t
 # API Services
 
 **Users**
+---
 *GET*
 /users            ------> Gets all users
 /users/{username}  -------> Gets a specific user
 /users/{username}/followers -----> Gets all the followers for the given username
 /user/{username}/follows -------> Gets all the people that the given user follows
+---
 
 *POST*
 /users/{username}/follow -----> Makes the user follow a given username
