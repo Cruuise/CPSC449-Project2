@@ -12,6 +12,17 @@ The two python files on the root of the project contain the two APIs required fo
 Note: The project does not need any other libraries besides the once stated in the
 
 # API Services
+
+**Users**
+*GET*
+/users            ------> Gets all users
+/users/{username}  -------> Gets a specific user
+/users/{username}/followers -----> Gets all the followers for the given username
+/user/{username}/follows -------> Gets all the people that the given user follows
+
+*POST*
+/users/{username}/follow -----> Makes the user follow a given username
+
 **Timeline**
 http GET localhost:8001/public
 http GET localhost:8001/posts/3
