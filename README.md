@@ -10,7 +10,11 @@ The two python files on the root of the project contain the two APIs required fo
 
 # Getting Started
 Note: The project does not need any other libraries besides the once stated in the
-
+The init file causes some issues on the virtual machin. You can initialize the databases by opening a terminal in the root folder and running the following commands:  
+> python3 bin/users_setup.py  
+> python3 bin/followers_setup.py  
+> python3 bin/posts_setup.py  
+ 
 # API Services
 
 Below are the routes followed by a description of what each does. The bullet point below each route is an example that can be ran using httpie
@@ -46,21 +50,21 @@ Below are the routes followed by a description of what each does. The bullet poi
 **Timeline**  
 *GET*  
 > `/public` --------------------------------------> Returns public timeline of all posts  
-- http GET localhost:8001/public  
+- http GET localhost:8100/public  
 
 
 > `/posts/{id}` ---------------------------------> Returns a specific post given an ID  
-- http GET localhost:8001/posts/3  
+- http GET localhost:81001/posts/3  
 
 
 > `/{username}/user_timeline` -------------------> Returns a timeline of all a given users posts  
-- http GET localhost:8001/Ash/user_timeline  
+- http GET localhost:8100/Ash/user_timeline  
 
 
 > `/{username}/home_timeline` -------------------> Returns a timeline of all the posts from the people the user follows. Requires authentication  
-- http GET Ash:something@localhost:8001/Ash/home_timeline  
+- http GET Ash:something@localhost:8100/Ash/home_timeline  
 
 
 *POST*  
 > `/post` ---------------------------------------> Makes a post. Requires authentication  
-- http POST Ash:something@localhost:8001/post username=Ash text="Im kev"   
+- http POST Ash:something@localhost:8100/post username=Ash text="Im kev"   
