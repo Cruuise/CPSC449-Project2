@@ -35,8 +35,13 @@ Below are the routes followed by a description of what each does. The bullet poi
   
 
 *POST*  
-> `/users/{username}/follow` ---------------------> Makes the user follow a given username  
+> `/users/{username}/follow` ---------------------> Makes the user follow a given username. Username must be unique  
+- http POST localhost:8000/users/kev/follow username=kev follows=anonymous
+
+
 > `/users` ---------------------------------------> Creates a new user  
+- http POST localhost:8000/users username=Someone bio="my bio" password=123 email=email@e.com
+
 
 **Timeline**  
 *GET*  
