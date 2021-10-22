@@ -30,13 +30,16 @@ def authenticate_login(username, password):
     return False
 #http GET Ash:something@localhost:8001/public
 
-# checks for  reposts
+# checks for  reposts, TODO
 def check_repost(text):
     repost = "no"
-    exists = db.query(f"SELECT * from posts where text='{text}'")
-    if not exists:
-        repost = f""
-    req = requests.get(f'http://localhost:8000/users/{username}/followers')
+    # repost_id = -1 if original, otherwise get the original post's id
+    repost_id = -1
+    for row in db.query(f"SELECT * FROM posts WHERE text='{text}' ORDER BY timestamp ASC"):
+        id = row["id"]
+        respost = f"localhost:8001/posts/{str(id)}" 
+        # All we need is the first value of the loop
+        break
     return repost
 
 # function for testing purposes, can ignore
@@ -62,9 +65,9 @@ def get_post(
     return db.query(f"SELECT * FROM posts WHERE id='{id}'")
 
 # Contains all of the users posts, requires authentication
-@hug.get('/{username}/user_timeline', requires=hug.authentication.basic(authenticate_login))
+@hug.get('/{username}/user_timeline')
 def user_timeline(username: hug.types.text):
-    return db.query("SELECT * FROM posts WHERE author='{username}'")
+    return db.query(f"SELECT * FROM posts WHERE author='{username}'")
 
 # Contains posts of all the ppl the user follows, requires authentication
 @hug.get('/{username}/home_timeline', requires=hug.authentication.basic(authenticate_login))
@@ -77,30 +80,31 @@ def home_timeline(username: hug.types.text):
     name_query = str(name_query)[1:-1]
     return db.query(f"SELECT * FROM posts WHERE author IN ({name_query})")
 
-@hug.post('/{username}/post', requires=hug.authentication.basic(authenticate_login))
+@hug.post('/post', requires=hug.authentication.basic(authenticate_login))
 def create_post(
     response,
-    username: hug.types.text,
-    text: hug.types.text):
-    repost = "no"
-    # if respost change to url 
-
+    username: hug.directives.user,
+    text: hug.types.text
+):
+    repost = check_repost(text)
     posts = db["posts"]
+
 
     post = {
         "author": username,
-        "text": bio,
+        "text": text,
         "timestamp": datetime.now,
         "repost": repost 
     }
     try:
-        users.insert(user)
+        posts.insert(post)
+        post["id"] = posts.last_pk
     except Exception as e:
         response.status = hug.falcon.HTTP_409
         return {"error": str(e)}
 
-    # this will need to call users api
-    return db.query("SELECT * FROM posts WHERE user")
+    response.set_header("Location", f"/posts/{post['id']}")
+    return post
 
 # test_function()
 # # followers = get_followers("Ash")
@@ -113,7 +117,18 @@ def create_post(
 # print(name_query)
 # name_query = str(name_query)[1:-1]
 # print(name_query)
-# hug.API(__name__).http.serve(port=8001)
+hug.API(__name__).http.serve(port=8001)
 
-exists = db.query(f"SELECT * from posts where text='I'm kev'").json()
-print(exists)
+# id = -1
+# for row in db.query(f"SELECT * FROM posts WHERE text='I''m kev' ORDER BY timestamp ASC"):
+#     id = row["id"]
+#     if not row:
+#         print("hello there!")
+#     break
+
+# print(id)
+# exists = db.query(f"SELECT * FROM posts WHERE author='kev!'")
+# if id == -1:
+#     print("i am empty")
+# else:
+#     print("I am not empty")

@@ -7,9 +7,6 @@ from sqlite_utils import Database
 hug.defaults.output_format = hug.output_format.pretty_json
 # db will be used for POST, db_query will be used for GET
 db = Database(sqlite3.connect("./var/all_users.db"))
-db_query = sqlite3.connect("./var/all_users.db")
-cursor = db_query.cursor()
-api = hug.get(on_invalid=hug.redirect.not_found)
 
 # Getting all the usernames
 @hug.get('/users')
@@ -21,7 +18,7 @@ def get_all_users():
 def get_single_users(response, username:str):
     # Checking to see if user exists
     try:
-        cursor.execute(f"SELECT bio FROM users WHERE username='{username}'")
+        db.query(f"SELECT bio FROM users WHERE username='{username}'")
     except sqlite_utils.db.NotFoundError:
         response.status = hug.falcon.HTTP_404
     query_string = (f"SELECT * FROM users WHERE username='{username}'")
@@ -54,8 +51,8 @@ def create_follower(
     }
     # Checking to see if users exist 
     try:
-        cursor.execute(f"SELECT username FROM users WHERE username='{username}'")
-        cursor.execute(f"SELECT username FROM users WHERE username='{follows}'")
+        db.query(f"SELECT username FROM users WHERE username='{username}'")
+        db.query(f"SELECT username FROM users WHERE username='{follows}'")
 
     except Exception as e:
         response.status = hug.falcon.HTTP_404
@@ -68,7 +65,6 @@ def create_follower(
         response.status = hug.falcon.HTTP_409
         return {"error": str(e)}
 
-    response.set_header("Location", f"/books/{follows['id']}")
     return user
 
 @hug.post("/users", status=hug.falcon.HTTP_201)
@@ -95,3 +91,6 @@ def create_user(
 
     response.set_header("Location", f"/users/{user['username']}")
     return user
+
+for row in db.query(f"SELECT * from users"):
+    print(row["username"])
