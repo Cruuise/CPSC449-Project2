@@ -9,11 +9,30 @@ The var folder contains the databases used by timeline.py and users.py. Users on
 The two python files on the root of the project contain the two APIs required for this project. Users.py handles all the requests to the users service; it does not depend on any services from timeline.py. On the other hand, timeline.py handles all the requests for the timeline service. Timeline.py acquires data from the users service through http requests. 
 
 # Getting Started
-Note: The project does not need any other libraries besides the once stated in the
-The init file causes some issues on the virtual machin. You can initialize the databases by opening a terminal in the root folder and running the following commands:  
+Note: Intstall the requirements with the following commands
+> sudo apt update  
+> sudo apt install --yes python3-pip ruby-foreman httpie sqlite3  
+> python3 -m pip install hug sqlite-utils  
+> sudo apt install --yes haproxy gunicorn  
+
+
+The init file causes some issues on the virtual machine. You can initialize the databases by opening a terminal in the root folder and running the following commands:  
 > python3 bin/users_setup.py  
 > python3 bin/followers_setup.py  
 > python3 bin/posts_setup.py  
+
+
+Once the databases are initialized, restart haproxy with the following command  
+> sudo systemctl restart haproxy
+
+Start foreman with the following command:  
+> foreman start -m "users=1, timeline=3"  
+
+This starts 1 instance of the user API and 3 instances of the timeline API. You can make sure that haproxy is running with the following command:  
+> sudo systemctl status haproxy
+
+Users API is running on port 8000, whereas the 3 instances of the timeline API are running on ports 8100. 8101, and 8102. Keep these ports in mind when looking at the example API calls.
+
  
 # API Services
 
@@ -63,6 +82,7 @@ Below are the routes followed by a description of what each does. The bullet poi
 
 > `/{username}/home_timeline` -------------------> Returns a timeline of all the posts from the people the user follows. Requires authentication  
 - http GET Ash:something@localhost:8100/Ash/home_timeline  
+- Authentication is passed along in the following format "username:password@domain"  
 
 
 *POST*  
