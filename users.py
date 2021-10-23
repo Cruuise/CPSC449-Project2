@@ -5,7 +5,6 @@ from sqlite_utils import Database
 
 # Makes the output JSON more legible
 hug.defaults.output_format = hug.output_format.pretty_json
-# db will be used for POST, db_query will be used for GET
 db = Database(sqlite3.connect("./var/all_users.db"))
 
 # Getting all the usernames
@@ -97,5 +96,3 @@ def create_user(
 
     response.set_header("Location", f"/users/{user['username']}")
     return user
-
-# hug.API(__name__).http.serve(port=7000)

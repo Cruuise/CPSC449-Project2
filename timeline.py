@@ -8,9 +8,7 @@ import requests
 
 # Makes the output JSON more legible
 hug.defaults.output_format = hug.output_format.pretty_json
-# db will be used for POST, db_query will be used for GET
 db = Database(sqlite3.connect("./var/all_posts.db"))
-api = hug.get(on_invalid=hug.redirect.not_found)
 
 # returns information from a given user. Will use this to auntenticate
 def get_user_info(username):
@@ -103,30 +101,3 @@ def create_post(
 
     response.set_header("Location", f"/posts/{post['id']}")
     return post
-
-# test_function()
-# # followers = get_followers("Ash")
-# #dictionary has a list insde 
-# print(followers)
-
-# name_query = []
-# for x in followers:
-#     name_query.append(x["user"])
-# print(name_query)
-# name_query = str(name_query)[1:-1]
-# print(name_query)
-# hug.API(__name__).http.serve(port=9000)
-
-# id = -1
-# for row in db.query(f"SELECT * FROM posts WHERE text='I''m kev' ORDER BY timestamp ASC"):
-#     id = row["id"]
-#     if not row:
-#         print("hello there!")
-#     break
-
-# print(id)
-# exists = db.query(f"SELECT * FROM posts WHERE author='kev!'")
-# if id == -1:
-#     print("i am empty")
-# else:
-#     print("I am not empty")
