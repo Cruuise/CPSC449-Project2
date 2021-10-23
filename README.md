@@ -9,7 +9,7 @@ The var folder contains the databases used by timeline.py and users.py. Users on
 The two python files on the root of the project contain the two APIs required for this project. Users.py handles all the requests to the users service; it does not depend on any services from timeline.py. On the other hand, timeline.py handles all the requests for the timeline service. Timeline.py acquires data from the users service through http requests. 
 
 # Getting Started
-Note: Install the requirements with the following commands
+Install the requirements with the following commands
 > sudo apt update  
 > sudo apt install --yes python3-pip ruby-foreman httpie sqlite3  
 > python3 -m pip install hug sqlite-utils  
