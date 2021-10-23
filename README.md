@@ -31,12 +31,13 @@ Start foreman with the following command:
 This starts 1 instance of the user API and 3 instances of the timeline API. You can make sure that haproxy is running with the following command:  
 > sudo systemctl status haproxy
 
-Users API is running on port 8000, whereas the 3 instances of the timeline API are running on ports 8100. 8101, and 8102. Keep these ports in mind when looking at the example API calls.
+Users API is running on port 8000, whereas the 3 instances of the timeline API are running on ports 8100. 8101, and 8102. Keep these ports in mind when looking at the example API calls.  
 
- 
+**NOTE:** Pay attention to which ports foreman starts the services in. In a fresh install of all the files, foreman started the users service in port 5000 and the timeline service instances in ports 5100, 51001, and 5002.  
+
 # API Services
 
-Below are the routes followed by a description of what each does. The bullet point below each route is an example that can be ran using httpie
+Below are the routes followed by a description of what each does. The bullet point below each route is an example that can be ran using httpie  
 **Users**  
 *GET*  
 
